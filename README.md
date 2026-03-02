@@ -21,6 +21,12 @@ __pycache__
 myenv
 ```
 
+## Start Server
+
+```
+flask run --debug
+```
+
 ## Stop Server
 
 `Ctrl + C`
