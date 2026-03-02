@@ -5,6 +5,10 @@ python -m venv myenv
 
 .\myenv\Scripts\Activate.ps1
 
+or 
+
+.\myenv\Scripts\activate.bat
+
 pip install flask
 ```
 
