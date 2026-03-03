@@ -100,6 +100,17 @@ movies = [
 
 
 # @ -> Decorator -> HOF
-@app.route("/")
+@app.get("/")
 def hello():
     return "<h1>Hello, World! 🎉 🔥</h1>"
+
+
+@app.get("/api/movies")
+def get_all_movies():
+    return movies
+
+
+# id -> variable
+@app.get("/api/movies/<id>")
+def get_movie_by_id(id):
+    return movies[0]
