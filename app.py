@@ -23,3 +23,7 @@ app.register_blueprint(movies_bp)
 # 3. Delete movie
 
 # Delete
+
+# BluePrint
+# 1. Organizing
+# 2. Template - Scale
