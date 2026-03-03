@@ -96,7 +96,7 @@ movies = [
 ]
 
 # Task
-# /movies - JSON
+# /api/movies - JSON
 
 
 # @ -> Decorator -> HOF
