@@ -111,6 +111,17 @@ def get_all_movies():
 
 
 # id -> variable
+# {"message": "movie not found"}
 @app.get("/api/movies/<id>")
 def get_movie_by_id(id):
-    return movies[0]
+    for movie in movies:
+        if movie["id"] == id:
+            return movie
+
+
+# Task
+# 1. Postman - create 3 Api
+# 2. Handle Not Found
+# 3. Delete movie
+
+# Delete
