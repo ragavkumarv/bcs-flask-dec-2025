@@ -4,6 +4,10 @@ from flask import Flask
 app = Flask(__name__)
 
 
+# SCREAMING_SNAKE_CASE or CONSTANT_CASE
+HTTP_NOT_FOUND = 404
+
+
 movies = [
     {
         "name": "Thor: Ragnarok",
@@ -110,13 +114,28 @@ def get_all_movies():
     return movies
 
 
+# Flask: List[Dict] -> JSON (Auto conversion)
+
+
 # id -> variable
 # {"message": "movie not found"}
 @app.get("/api/movies/<id>")
 def get_movie_by_id(id):
     for movie in movies:
         if movie["id"] == id:
-            return movie
+            return movie  # Dict -> JSON
+
+    return {"message": "movie not found"}, HTTP_NOT_FOUND
+
+
+@app.delete("/api/movies/<id>")
+def delete_movie_by_id(id):
+    for movie in movies:
+        if movie["id"] == id:
+            movies.remove(movie)
+            return {"data": movie, "message": "movie delete successfully"}
+
+    return {"message": "movie not found"}, HTTP_NOT_FOUND
 
 
 # Task
