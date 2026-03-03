@@ -16,7 +16,7 @@ def hello():
     return "<h1>Hello, World! 🎉 🔥</h1>"
 
 
-app.register_blueprint(movies_bp)
+app.register_blueprint(movies_bp, url_prefix="/api/movies")
 # Task
 # 1. Postman - create 3 Api
 # 2. Handle Not Found

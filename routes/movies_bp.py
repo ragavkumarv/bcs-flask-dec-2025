@@ -100,7 +100,7 @@ movies = [
 movies_bp = Blueprint("movies_bp", __name__)
 
 
-@movies_bp.get("/api/movies")
+@movies_bp.get("/")
 def get_all_movies():
     return movies
 
@@ -110,7 +110,7 @@ def get_all_movies():
 
 # id -> variable
 # {"message": "movie not found"}
-@movies_bp.get("/api/movies/<id>")
+@movies_bp.get("/<id>")
 def get_movie_by_id(id):
     for movie in movies:
         if movie["id"] == id:
@@ -119,7 +119,7 @@ def get_movie_by_id(id):
     return {"message": "movie not found"}, HTTP_NOT_FOUND
 
 
-@movies_bp.delete("/api/movies/<id>")
+@movies_bp.delete("/<id>")
 def delete_movie_by_id(id):
     for movie in movies:
         if movie["id"] == id:
