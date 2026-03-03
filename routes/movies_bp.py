@@ -1,6 +1,7 @@
 # from package_name import function
 from flask import Blueprint
-
+from models.movie import Movie
+from extensions import db
 
 # SCREAMING_SNAKE_CASE or CONSTANT_CASE
 HTTP_NOT_FOUND = 404
@@ -112,11 +113,17 @@ def get_all_movies():
 # {"message": "movie not found"}
 @movies_bp.get("/<id>")
 def get_movie_by_id(id):
-    for movie in movies:
-        if movie["id"] == id:
-            return movie  # Dict -> JSON
+    # for movie in movies:
+    #     if movie["id"] == id:
+    #         return movie  # Dict -> JSON
 
-    return {"message": "movie not found"}, HTTP_NOT_FOUND
+    # Select * from movies where id = 100
+    data = db.session.get(Movie, id)
+
+    if not data:
+        return {"message": "movie not found"}, HTTP_NOT_FOUND
+
+    return data.to_dict()
 
 
 @movies_bp.delete("/<id>")
