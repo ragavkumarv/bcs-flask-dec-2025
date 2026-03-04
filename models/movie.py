@@ -19,11 +19,12 @@ class Movie(Base):
     trailer = Column(String(500))
 
     def to_dict(self):
+
         return {
             "id": self.id,
             "name": self.name,
             "poster": self.poster,
             "summary": self.summary,
-            "rating": self.rating,
+            "rating": float(self.rating),
             "trailer": self.trailer,
         }
