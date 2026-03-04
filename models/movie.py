@@ -9,6 +9,8 @@ Base = declarative_base()
 class Movie(Base):
     __tablename__ = "movies"
 
+    # always=False - Autoincrement & Accept Our ID
+    # always=True - Only Autoincrement
     id = Column(Integer, Identity(always=False), primary_key=True)
     name = Column(String(100), nullable=False)
     poster = Column(String(500))

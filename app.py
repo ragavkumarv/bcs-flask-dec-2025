@@ -9,9 +9,10 @@ from sqlalchemy.sql import text
 app = Flask(__name__)
 app.config.from_object(Config)  # URL
 
-db.init_app(app)
+db.init_app(app)  # call button
 
 
+# Testing DB Connection
 with app.app_context():
     try:
         result = db.session.execute(text("SELECT 1")).fetchall()
@@ -30,6 +31,8 @@ def hello():
 
 
 app.register_blueprint(movies_bp, url_prefix="/api/movies")
+
+
 # Task
 # 1. Postman - create 3 Api
 # 2. Handle Not Found

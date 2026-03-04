@@ -61,3 +61,9 @@ pip install -r requirements.txt
    2. ORM - Object Relational Mapping
       1. Multi DB
       2. Migration
+
+
+
+# myenv
+1. Fixing the python version
+2. Installing python package
