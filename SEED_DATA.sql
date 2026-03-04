@@ -97,3 +97,10 @@ INSERT INTO movies (id, name, poster, summary, rating, trailer) VALUES
     8.0, 
     'https://www.youtube.com/embed/KsH2LA8pCjo'
 );
+
+SELECT movies.id AS movies_id, 
+    movies.name AS movies_name, movies.poster AS movies_poster, 
+    movies.summary AS movies_summary, 
+    movies.rating AS movies_rating, movies.trailer AS movies_trailer 
+FROM movies 
+WHERE movies.id = %(pk_1)s

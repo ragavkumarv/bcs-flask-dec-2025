@@ -2,6 +2,8 @@
 from flask import Blueprint
 from models.movie import Movie
 from extensions import db
+from sqlalchemy import select
+
 
 # SCREAMING_SNAKE_CASE or CONSTANT_CASE
 HTTP_NOT_FOUND = 404
@@ -101,8 +103,15 @@ movies = [
 movies_bp = Blueprint("movies_bp", __name__)
 
 
+# List[Movie Object] -> List[Dictionary]
 @movies_bp.get("/")
 def get_all_movies():
+    #  Select * from movies
+    data = db.session.execute(select(Movie)).scalars().all()
+
+    # Python
+    print(data[0].to_dict())
+
     return movies
 
 
