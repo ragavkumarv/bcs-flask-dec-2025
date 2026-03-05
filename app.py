@@ -1,6 +1,7 @@
 # save this as app.py
 from flask import Flask
 from routes.movies_bp import movies_bp
+from routes.users_bp import users_bp
 from config import Config
 from extensions import db
 from sqlalchemy.sql import text
@@ -31,7 +32,7 @@ def hello():
 
 
 app.register_blueprint(movies_bp, url_prefix="/api/movies")
-
+app.register_blueprint(users_bp, url_prefix="/api/auth")
 
 # Task
 # 1. Postman - create 3 Api

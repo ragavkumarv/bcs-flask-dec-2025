@@ -8,6 +8,7 @@ from sqlalchemy import select
 # SCREAMING_SNAKE_CASE or CONSTANT_CASE
 HTTP_NOT_FOUND = 404
 HTTP_SERVER_ERROR = 500
+HTTP_CREATED = 201
 
 movies_bp = Blueprint("movies_bp", __name__)
 
@@ -81,7 +82,10 @@ def create_movie():
         db.session.rollback()  # Undo
         return {"message": str(err)}, HTTP_SERVER_ERROR
 
-    return {"data": new_movie.to_dict(), "message": "movie added successfully"}
+    return {
+        "data": new_movie.to_dict(),
+        "message": "movie added successfully",
+    }, HTTP_CREATED
 
 
 @movies_bp.put("/<id>")
