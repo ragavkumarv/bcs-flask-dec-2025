@@ -67,11 +67,11 @@ def create_movie():
     data = request.get_json()
 
     new_movie = Movie(
-        name=data["name"],
-        poster=data["poster"],
-        summary=data["summary"],
-        rating=data["rating"],
-        trailer=data["trailer"],
+        name=data.get("name"),
+        poster=data.get("poster"),
+        summary=data.get("summary"),
+        rating=data.get("rating"),
+        trailer=data.get("trailer"),
     )
 
     try:
@@ -83,5 +83,30 @@ def create_movie():
 
     return {"data": new_movie.to_dict(), "message": "movie added successfully"}
 
-    # print(data)
-    # return data
+
+@movies_bp.put("/<id>")
+def update_movie(id):
+    # Data -> body as json
+    update_movie = request.get_json()
+
+    db_movie = db.session.get(Movie, id)
+
+    if not db_movie:
+        return {"message": "movie not found"}, HTTP_NOT_FOUND
+
+    # Avenger 3
+    db_movie.name = update_movie.get("name")
+    db_movie.poster = update_movie.get("poster")
+    db_movie.summary = update_movie.get("summary")  # None
+    db_movie.rating = update_movie.get("rating")
+    db_movie.trailer = update_movie.get("trailer")  # None
+
+    try:
+        db.session.commit()  # permanent
+    except Exception as err:
+        db.session.rollback()  # Undo
+        return {"message": str(err)}, HTTP_SERVER_ERROR
+
+    return {"data": db_movie.to_dict(), "message": "movie updated successfully"}
+
+    # return update_movie
