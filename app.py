@@ -5,10 +5,12 @@ from routes.users_bp import users_bp
 from config import Config
 from extensions import db
 from sqlalchemy.sql import text
+from flask_cors import CORS
 
 
 app = Flask(__name__)
 app.config.from_object(Config)  # URL
+CORS(app)
 
 db.init_app(app)  # call button
 
