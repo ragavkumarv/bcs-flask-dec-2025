@@ -3,6 +3,7 @@ from flask import Blueprint, request
 from models.user import User
 from extensions import db
 from sqlalchemy import select
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 # SCREAMING_SNAKE_CASE or CONSTANT_CASE
@@ -36,7 +37,7 @@ def signup_user():
     # Add the user to the Table
 
     try:
-        new_user = User(username=username, password=password)
+        new_user = User(username=username, password=generate_password_hash(password))
         db.session.add(new_user)
         db.session.commit()
     except Exception as err:
@@ -44,7 +45,7 @@ def signup_user():
         return {"message": str(err)}, HTTP_SERVER_ERROR
 
     return {
-        "data": new_user.to_dict(),
+        "data": {"id": new_user.id, "username": new_user.username},
         "message": "User Signed up successfully",
     }, HTTP_CREATED
 
@@ -62,7 +63,7 @@ def login_user():
     if not db_user:
         return {"error": "Invalid credentials"}, HTTP_USER_ERROR
 
-    if db_user.password != password:
+    if not check_password_hash(db_user.password, password):
         return {"error": "Invalid credentials"}, HTTP_USER_ERROR
 
     return {"message": "Login Successful"}
