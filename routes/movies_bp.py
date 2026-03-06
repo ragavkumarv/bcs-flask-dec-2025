@@ -3,6 +3,7 @@ from flask import Blueprint, request
 from models.movie import Movie
 from extensions import db
 from sqlalchemy import select
+from flask_jwt_extended import jwt_required
 
 
 # SCREAMING_SNAKE_CASE or CONSTANT_CASE
@@ -32,6 +33,7 @@ def get_all_movies():
 # id -> variable
 # {"message": "movie not found"}
 @movies_bp.get("/<id>")  # API Endpoint
+@jwt_required()
 def get_movie_by_id(id):
     # Select * from movies where id = 100
     data = db.session.get(Movie, id)

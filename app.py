@@ -7,23 +7,24 @@ from extensions import db, jwt
 from sqlalchemy.sql import text
 from flask_cors import CORS
 
+HTTP_UNAUTHORIZED = 401
 
 app = Flask(__name__)
 app.config.from_object(Config)  # URL
 CORS(app)
 
 db.init_app(app)  # call button
-jwt.init_app(app)
+jwt.init_app(app)  # JWT - JSON Web Token
 
 
 @jwt.unauthorized_loader
 def _unauth(e):
-    return {"error": "missing/invalid token"}, 401
+    return {"error": "missing/invalid token"}, HTTP_UNAUTHORIZED
 
 
 @jwt.expired_token_loader
 def _expired(h, p):
-    return ({"error": "token expired"}), 401
+    return ({"error": "token expired"}), HTTP_UNAUTHORIZED
 
 
 # Testing DB Connection

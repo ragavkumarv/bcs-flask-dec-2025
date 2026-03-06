@@ -4,6 +4,7 @@ from models.user import User
 from extensions import db
 from sqlalchemy import select
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import create_access_token
 
 
 # SCREAMING_SNAKE_CASE or CONSTANT_CASE
@@ -66,4 +67,6 @@ def login_user():
     if not check_password_hash(db_user.password, password):
         return {"error": "Invalid credentials"}, HTTP_USER_ERROR
 
-    return {"message": "Login Successful"}
+    # identity must be unique
+    token = create_access_token(identity=username)
+    return {"message": "Login Successful", "token": token}
