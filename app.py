@@ -3,7 +3,7 @@ from flask import Flask
 from routes.movies_bp import movies_bp
 from routes.users_bp import users_bp
 from config import Config
-from extensions import db
+from extensions import db, jwt
 from sqlalchemy.sql import text
 from flask_cors import CORS
 
@@ -13,6 +13,17 @@ app.config.from_object(Config)  # URL
 CORS(app)
 
 db.init_app(app)  # call button
+jwt.init_app(app)
+
+
+@jwt.unauthorized_loader
+def _unauth(e):
+    return {"error": "missing/invalid token"}, 401
+
+
+@jwt.expired_token_loader
+def _expired(h, p):
+    return ({"error": "token expired"}), 401
 
 
 # Testing DB Connection

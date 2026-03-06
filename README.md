@@ -67,3 +67,7 @@ pip install -r requirements.txt
 # myenv
 1. Fixing the python version
 2. Installing python package
+
+```
+pip install Flask-JWT-Extended
+```
