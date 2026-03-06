@@ -12,10 +12,11 @@ HTTP_UNAUTHORIZED = 401
 app = Flask(__name__)
 app.config.from_object(Config)  # URL
 
+CORS(app)
+
 
 db.init_app(app)  # call button
 jwt.init_app(app)  # JWT - JSON Web Token
-CORS(app)
 
 
 @jwt.unauthorized_loader

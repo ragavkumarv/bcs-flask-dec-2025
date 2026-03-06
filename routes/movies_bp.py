@@ -15,7 +15,8 @@ movies_bp = Blueprint("movies_bp", __name__)
 
 
 # List[Movie Object] -> List[Dictionary]
-@movies_bp.get("/")
+@movies_bp.get("")
+@jwt_required()
 def get_all_movies():
     #  Select * from movies - Black Box - Learning
     data = db.session.execute(select(Movie)).scalars().all()
@@ -64,7 +65,7 @@ def delete_movie_by_id(id):
     return {"data": movie.to_dict(), "message": "movie delete successfully"}
 
 
-@movies_bp.post("/")
+@movies_bp.post("")
 def create_movie():
     # Data -> body as json
     data = request.get_json()
