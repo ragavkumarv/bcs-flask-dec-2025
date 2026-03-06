@@ -9,6 +9,7 @@ from sqlalchemy import select
 HTTP_NOT_FOUND = 404
 HTTP_SERVER_ERROR = 500
 HTTP_USER_ERROR = 400
+HTTP_CREATED = 201
 
 users_bp = Blueprint("users_bp", __name__)
 
@@ -34,25 +35,34 @@ def signup_user():
     # Table
     # Add the user to the Table
 
-    new_user = User(username=username, password=password)
-    db.session.add(new_user)
-    db.session.commit()
+    try:
+        new_user = User(username=username, password=password)
+        db.session.add(new_user)
+        db.session.commit()
+    except Exception as err:
+        db.session.rollback()  # Undo
+        return {"message": str(err)}, HTTP_SERVER_ERROR
 
-    return new_user.to_dict()
+    return {
+        "data": new_user.to_dict(),
+        "message": "User Signed up successfully",
+    }, HTTP_CREATED
 
-    # new_movie = Movie(
-    #     name=data.get("name"),
-    #     poster=data.get("poster"),
-    #     summary=data.get("summary"),
-    #     rating=data.get("rating"),
-    #     trailer=data.get("trailer"),
-    # )
 
-    # try:
-    #     db.session.add(new_movie)  # temp
-    #     db.session.commit()  # permanent
-    # except Exception as err:
-    #     db.session.rollback()  # Undo
-    #     return {"message": str(err)}, HTTP_SERVER_ERROR
+@users_bp.post("/login")
+def login_user():
+    # Data -> body as json
+    data = request.get_json()
+    username = data.get("username")
+    password = data.get("password")
 
-    # return {"data": new_movie.to_dict(), "message": "movie added successfully"}
+    stmt = select(User).where(User.username == username)
+    db_user = db.session.execute(stmt).scalar_one_or_none()  # 1 or None
+
+    if not db_user:
+        return {"error": "Invalid credentials"}, HTTP_USER_ERROR
+
+    if db_user.password != password:
+        return {"error": "Invalid credentials"}, HTTP_USER_ERROR
+
+    return {"message": "Login Successful"}
