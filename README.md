@@ -69,5 +69,5 @@ pip install -r requirements.txt
 2. Installing python package
 
 ```
-pip install Flask-JWT-Extended
+pip install flask-cors Flask-JWT-Extended
 ```
