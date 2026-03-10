@@ -69,4 +69,4 @@ def login_user():
 
     # identity must be unique
     token = create_access_token(identity=username)
-    return {"message": "Login Successful", "token": token}
+    return {"message": "Login Successful", "token": token, "role": db_user.role}

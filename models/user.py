@@ -10,6 +10,7 @@ class User(Base):
     id = Column(Integer, Identity(always=False), primary_key=True)
     username = Column(String(100), nullable=False, unique=True)
     password = Column(String(200), nullable=False)
+    role = Column(String(20), nullable=False, default="USER")
 
     def to_dict(self):
 
@@ -17,4 +18,5 @@ class User(Base):
             "id": self.id,
             "username": self.username,
             "password": self.password,
+            "role": self.role,
         }
