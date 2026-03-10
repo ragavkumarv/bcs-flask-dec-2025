@@ -3,13 +3,14 @@ from flask import Blueprint, request
 from models.movie import Movie
 from extensions import db
 from sqlalchemy import select
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt
 
 
 # SCREAMING_SNAKE_CASE or CONSTANT_CASE
 HTTP_NOT_FOUND = 404
 HTTP_SERVER_ERROR = 500
 HTTP_CREATED = 201
+HTTP_UNAUTHORIZED = 401
 
 movies_bp = Blueprint("movies_bp", __name__)
 
@@ -49,8 +50,13 @@ def get_movie_by_id(id):
 
 
 @movies_bp.delete("/<id>")
+@jwt_required()
 def delete_movie_by_id(id):
     movie = db.session.get(Movie, id)
+    role = get_jwt().get("role", "USER")  # Default is USER
+
+    if role != "ADMIN":
+        return {"error": "Not Authorized"}, HTTP_UNAUTHORIZED
 
     if not movie:
         return {"message": "movie not found"}, HTTP_NOT_FOUND
@@ -66,6 +72,7 @@ def delete_movie_by_id(id):
 
 
 @movies_bp.post("")
+@jwt_required()
 def create_movie():
     # Data -> body as json
     data = request.get_json()
@@ -77,6 +84,11 @@ def create_movie():
         rating=data.get("rating"),
         trailer=data.get("trailer"),
     )
+
+    role = get_jwt().get("role", "USER")
+
+    if role != "ADMIN":
+        return {"error": "Not Authorized"}, HTTP_UNAUTHORIZED
 
     try:
         db.session.add(new_movie)  # temp

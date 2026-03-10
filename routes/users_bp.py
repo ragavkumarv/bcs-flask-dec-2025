@@ -68,5 +68,7 @@ def login_user():
         return {"error": "Invalid credentials"}, HTTP_USER_ERROR
 
     # identity must be unique
-    token = create_access_token(identity=username)
+    token = create_access_token(
+        identity=username, additional_claims={"role": db_user.role}
+    )  # kalsjflksjadfjalsdfjl
     return {"message": "Login Successful", "token": token, "role": db_user.role}
