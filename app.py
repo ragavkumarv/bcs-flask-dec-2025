@@ -6,6 +6,7 @@ from config import Config
 from extensions import db, jwt
 from sqlalchemy.sql import text
 from flask_cors import CORS
+from os import environ
 
 HTTP_UNAUTHORIZED = 401
 
@@ -49,6 +50,11 @@ def hello():
 
 app.register_blueprint(movies_bp, url_prefix="/api/movies")
 app.register_blueprint(users_bp, url_prefix="/api/auth")
+
+if __name__ == "__main__":
+    port = environ.get("PORT", 5000)  # Auto assign port number (render.com)
+    app.run(host="0.0.0.0", port=port, debug=True)  # Any ip address is accepted
+
 
 # Task
 # 1. Postman - create 3 Api
